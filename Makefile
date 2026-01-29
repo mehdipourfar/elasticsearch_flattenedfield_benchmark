@@ -15,15 +15,22 @@ help:
 	@echo ""
 	@echo "Configuration:"
 	@echo "  ES_URL        = http://localhost:9200"
+	@echo "  ES_USER       = (optional, env var for auth)"
+	@echo "  ES_PASS       = (optional, env var for auth)"
 	@echo "  DOC_COUNT     = 100000"
 	@echo "  QUERY_COUNT   = 5000"
 	@echo "  SEED          = 42"
 	@echo "  CONCURRENCY   = 32"
 	@echo "  WARMUP        = 5000"
 	@echo "  BENCH_REQS    = 100000"
+	@echo ""
+	@echo "Example with authentication:"
+	@echo "  make run ES_USER=elastic ES_PASS=mypassword"
 
 # Configuration variables
 ES_URL ?= http://localhost:9200
+ES_USER ?=
+ES_PASS ?=
 DOC_COUNT ?= 100000
 QUERY_COUNT ?= 5000
 SEED ?= 42
@@ -32,6 +39,11 @@ WARMUP_REQUESTS ?= 5000
 BENCH_REQUESTS ?= 100000
 CHUNK_DOCS ?= 2000
 TIMEOUT_SEC ?= 120
+
+# Export environment variables
+export ES_URL
+export ES_USER
+export ES_PASS
 
 # Generated files
 BULK_KW = bulk_bench_keywords.jsonl

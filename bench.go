@@ -258,10 +258,24 @@ func main() {
 	}
 	fmt.Printf("✓ Loaded %d queries\n", len(queries))
 
+	// Get auth from environment if provided
+	user := os.Getenv("ES_USER")
+	pass := os.Getenv("ES_PASS")
+	if user != "" && pass != "" {
+		fmt.Printf("✓ Using authentication (ES_USER=%s)\n", user)
+	}
+	
 	// Connect to ES
 	cfg := elasticsearch.Config{
 		Addresses: []string{*esURL},
 	}
+	
+	// Add authentication if provided
+	if user != "" && pass != "" {
+		cfg.Username = user
+		cfg.Password = pass
+	}
+	
 	client, err := elasticsearch.NewClient(cfg)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR connecting to ES: %v\n", err)

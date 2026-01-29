@@ -9,3 +9,8 @@ dependencies = [
     "ipython>=9.9.0",
     "requests>=2.32.5",
 ]
+
+[dependency-groups]
+dev = [
+    "python-lsp-server>=1.14.0",
+]
