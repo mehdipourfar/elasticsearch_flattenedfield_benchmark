@@ -8,8 +8,7 @@ import json
 import argparse
 import sys
 import time
-from elasticsearch import Elasticsearch
-from elasticsearch.helpers import bulk
+import requests
 
 
 def read_bulk_file_header(bulk_file: str) -> dict:
@@ -19,25 +18,34 @@ def read_bulk_file_header(bulk_file: str) -> dict:
     return json.loads(line)
 
 
-def delete_index_if_exists(client: Elasticsearch, index_name: str) -> None:
+def delete_index_if_exists(es_url: str, index_name: str) -> None:
     """Delete index if it exists."""
     try:
-        if client.indices.exists(index=index_name):
-            client.indices.delete(index=index_name)
-            print(f"✓ Deleted existing index: {index_name}")
+        resp = requests.head(f"{es_url}/{index_name}")
+        if resp.status_code == 200:
+            r = requests.delete(f"{es_url}/{index_name}")
+            if r.status_code == 200:
+                print(f"✓ Deleted existing index: {index_name}")
     except Exception as e:
         print(f"ERROR deleting index: {e}", file=sys.stderr)
         sys.exit(1)
 
 
-def create_index(client: Elasticsearch, index_name: str, settings: dict, mappings: dict) -> None:
+def create_index(es_url: str, index_name: str, settings: dict, mappings: dict) -> None:
     """Create index with provided settings and mappings."""
     try:
-        client.indices.create(
-            index=index_name,
-            settings=settings,
-            mappings=mappings
+        payload = {
+            "settings": settings,
+            "mappings": mappings
+        }
+        r = requests.put(
+            f"{es_url}/{index_name}",
+            json=payload,
+            headers={"Content-Type": "application/json"}
         )
+        if r.status_code not in (200, 201):
+            print(f"ERROR creating index: {r.status_code} {r.text}", file=sys.stderr)
+            sys.exit(1)
         print(f"✓ Created index: {index_name}")
     except Exception as e:
         print(f"ERROR creating index: {e}", file=sys.stderr)
@@ -71,7 +79,7 @@ def read_bulk_documents(bulk_file: str):
 
 
 def bulk_ingest(
-    client: Elasticsearch,
+    es_url: str,
     index_name: str,
     bulk_file: str,
     chunk_size: int,
@@ -80,10 +88,11 @@ def bulk_ingest(
     """
     Bulk ingest documents. Returns (doc_count, error_count, errors_list).
     """
-    client.transport.perform_request(
-        "PUT",
-        f"/{index_name}/_settings",
-        body={"index.refresh_interval": "-1"}  # Disable refresh during bulk
+    # Disable refresh
+    r = requests.put(
+        f"{es_url}/{index_name}/_settings",
+        json={"index.refresh_interval": "-1"},
+        headers={"Content-Type": "application/json"}
     )
     print(f"✓ Disabled refresh_interval for bulk ingest")
     
@@ -91,47 +100,52 @@ def bulk_ingest(
     error_count = 0
     errors = []
     
-    def action_generator():
-        """Yield actions for bulk API."""
-        nonlocal doc_count, error_count, errors
-        
-        for action_meta, doc_source in read_bulk_documents(bulk_file):
-            # Extract metadata
-            index_op = action_meta.get("index", {})
-            _id = index_op.get("_id")
-            
-            action = {
-                "_op_type": "index",
-                "_index": index_name,
-                "_id": _id,
-            }
-            action.update(doc_source)
-            
-            yield action
+    # Read all bulk lines (skip header)
+    bulk_lines = []
+    with open(bulk_file) as f:
+        f.readline()  # Skip header
+        bulk_lines = [line.rstrip('\n') for line in f]
     
-    # Perform bulk ingest
-    try:
-        for ok, result in bulk(
-            client,
-            action_generator(),
-            chunk_size=chunk_size,
-            raise_on_error=False,
-            timeout=f"{timeout_seconds}s"
-        ):
-            if not ok:
-                error_count += 1
-                errors.append(result)
-            else:
-                doc_count += 1
-    except Exception as e:
-        print(f"ERROR during bulk ingest: {e}", file=sys.stderr)
-        sys.exit(1)
+    # Send in chunks (each doc = 2 lines: action + source)
+    for chunk_start in range(0, len(bulk_lines), chunk_size * 2):
+        chunk_end = min(chunk_start + chunk_size * 2, len(bulk_lines))
+        chunk = bulk_lines[chunk_start:chunk_end]
+        
+        # Join lines and send
+        body = '\n'.join(chunk) + '\n'
+        try:
+            r = requests.post(
+                f"{es_url}/_bulk",
+                data=body,
+                headers={"Content-Type": "application/x-ndjson"},
+                timeout=timeout_seconds
+            )
+            
+            if r.status_code != 200:
+                print(f"WARNING: Bulk response {r.status_code}")
+            
+            # Count successful docs from response
+            try:
+                resp_json = r.json()
+                if "items" in resp_json:
+                    for item in resp_json["items"]:
+                        if "index" in item:
+                            if item["index"].get("status") in (200, 201):
+                                doc_count += 1
+                            else:
+                                error_count += 1
+                                errors.append(item["index"])
+            except Exception as e:
+                print(f"WARNING: Could not parse bulk response: {e}")
+        except Exception as e:
+            print(f"ERROR during bulk chunk: {e}", file=sys.stderr)
+            sys.exit(1)
     
     # Re-enable refresh
-    client.transport.perform_request(
-        "PUT",
-        f"/{index_name}/_settings",
-        body={"index.refresh_interval": "1s"}
+    requests.put(
+        f"{es_url}/{index_name}/_settings",
+        json={"index.refresh_interval": "1s"},
+        headers={"Content-Type": "application/json"}
     )
     
     return doc_count, error_count, errors
@@ -156,26 +170,30 @@ def main():
     
     # Connect to ES
     try:
-        client = Elasticsearch([args.es_url])
-        info = client.info()
-        print(f"✓ Connected to Elasticsearch {info['version']['number']}")
+        r = requests.get(f"{args.es_url}/")
+        if r.status_code == 200:
+            info = r.json()
+            print(f"✓ Connected to Elasticsearch {info['version']['number']}")
+        else:
+            print(f"ERROR: Could not connect to Elasticsearch", file=sys.stderr)
+            sys.exit(1)
     except Exception as e:
         print(f"ERROR connecting to ES: {e}", file=sys.stderr)
         sys.exit(1)
     
     # Delete if needed
     if args.recreate:
-        delete_index_if_exists(client, index_name)
+        delete_index_if_exists(args.es_url, index_name)
     
     # Create index
-    create_index(client, index_name, settings, mappings)
+    create_index(args.es_url, index_name, settings, mappings)
     
     # Start timer (before bulk ingest)
     start_time = time.time()
     
     # Bulk ingest
     doc_count, error_count, errors = bulk_ingest(
-        client,
+        args.es_url,
         index_name,
         args.bulk_file,
         args.chunk_docs,
@@ -188,7 +206,7 @@ def main():
     # Refresh if requested
     if args.refresh:
         try:
-            client.indices.refresh(index=index_name)
+            r = requests.post(f"{args.es_url}/{index_name}/_refresh")
             print(f"✓ Refreshed index")
         except Exception as e:
             print(f"WARNING: Failed to refresh: {e}")

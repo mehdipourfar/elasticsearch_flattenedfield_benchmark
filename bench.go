@@ -163,14 +163,17 @@ func runPhase(
 	var wg sync.WaitGroup
 	requestChan := make(chan int, concurrency)
 
-	// Worker pool
+	// Worker pool - each worker gets its own RNG
 	for i := 0; i < concurrency; i++ {
 		wg.Add(1)
-		go func() {
+		workerID := int64(i)
+		workerRNG := rand.New(rand.NewSource(rng.Int63() + workerID))
+		
+		go func(workerRNG *rand.Rand) {
 			defer wg.Done()
 			for range requestChan {
-				// Pick random query
-				query := queries[rng.Intn(len(queries))]
+				// Pick random query using worker's own RNG
+				query := queries[workerRNG.Intn(len(queries))]
 
 				// Send request and measure latency
 				start := time.Now()
@@ -189,7 +192,7 @@ func runPhase(
 					}
 				}
 			}
-		}()
+		}(workerRNG)
 	}
 
 	// Feed requests
