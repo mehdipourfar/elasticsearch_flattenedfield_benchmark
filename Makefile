@@ -14,18 +14,22 @@ help:
 	@echo "  make help               Show this help"
 	@echo ""
 	@echo "Configuration:"
-	@echo "  ES_URL        = http://localhost:9200"
-	@echo "  ES_USER       = (optional, env var for auth)"
-	@echo "  ES_PASS       = (optional, env var for auth)"
-	@echo "  DOC_COUNT     = 100000"
-	@echo "  QUERY_COUNT   = 5000"
-	@echo "  SEED          = 42"
-	@echo "  CONCURRENCY   = 32"
-	@echo "  WARMUP        = 5000"
-	@echo "  BENCH_REQS    = 100000"
+	@echo "  ES_URL          = http://localhost:9200"
+	@echo "  ES_USER         = (optional, env var for auth)"
+	@echo "  ES_PASS         = (optional, env var for auth)"
+	@echo "  DOC_COUNT       = 100000"
+	@echo "  QUERY_COUNT     = 5000"
+	@echo "  SEED            = 42"
+	@echo "  CONCURRENCY     = 32"
+	@echo "  WARMUP          = 5000"
+	@echo "  BENCH_REQS      = 100000"
+	@echo "  BENCHMARK_AGGS  = false (set to 'true' to benchmark with aggregations)"
 	@echo ""
-	@echo "Example with authentication:"
-	@echo "  make run ES_USER=elastic ES_PASS=mypassword"
+	@echo "Examples:"
+	@echo "  make run                                    # Basic benchmark"
+	@echo "  make run ES_USER=elastic ES_PASS=password  # With authentication"
+	@echo "  make run BENCHMARK_AGGS=true               # With aggregation benchmarks"
+	@echo "  make benchmark BENCHMARK_AGGS=true         # Only aggregation benchmarks"
 
 # Configuration variables
 ES_URL ?= http://localhost:9200
@@ -39,6 +43,7 @@ WARMUP_REQUESTS ?= 5000
 BENCH_REQUESTS ?= 100000
 CHUNK_DOCS ?= 2000
 TIMEOUT_SEC ?= 120
+BENCHMARK_AGGS ?= false
 
 # Export environment variables
 export ES_URL
@@ -122,7 +127,8 @@ benchmark: $(QUERIES_KW) $(QUERIES_FLAT)
 		--total-requests $(BENCH_REQUESTS) \
 		--timeout-ms 2000 \
 		--seed $(SEED) \
-		--output $(RESULTS_KW)
+		--output $(RESULTS_KW) \
+		--benchmark-aggs $(BENCHMARK_AGGS)
 	@echo ""
 	@echo "Benchmarking flattened index..."
 	go run bench.go \
@@ -133,7 +139,8 @@ benchmark: $(QUERIES_KW) $(QUERIES_FLAT)
 		--total-requests $(BENCH_REQUESTS) \
 		--timeout-ms 2000 \
 		--seed $(SEED) \
-		--output $(RESULTS_FLAT)
+		--output $(RESULTS_FLAT) \
+		--benchmark-aggs $(BENCHMARK_AGGS)
 
 run: generate-bulk index generate-queries benchmark
 	@echo ""

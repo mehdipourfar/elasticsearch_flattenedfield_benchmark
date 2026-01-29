@@ -213,7 +213,7 @@ func runPhase(
 func extractFieldsFromQuery(query *Query) []string {
 	// Extract field names from query filters
 	fields := make(map[string]bool)
-	
+
 	if body, ok := query.Body["query"].(map[string]interface{}); ok {
 		if boolQuery, ok := body["bool"].(map[string]interface{}); ok {
 			if filterList, ok := boolQuery["filter"].([]interface{}); ok {
@@ -234,7 +234,7 @@ func extractFieldsFromQuery(query *Query) []string {
 			}
 		}
 	}
-	
+
 	var result []string
 	for field := range fields {
 		result = append(result, field)
@@ -246,27 +246,63 @@ func mutateQueryWithAgg(query *Query, rng *rand.Rand) *Query {
 	// Create a copy of query with random terms aggregation
 	mutated := *query
 	mutated.Body = make(map[string]interface{})
-	
+
 	// Copy existing body fields
 	for k, v := range query.Body {
 		mutated.Body[k] = v
 	}
-	
-	// Extract fields from query filters
-	fields := extractFieldsFromQuery(query)
-	if len(fields) == 0 {
-		return &mutated
+
+	// Extract fields from query filters (to AVOID aggregating on filtered fields)
+	filteredFields := extractFieldsFromQuery(query)
+	filteredFieldsMap := make(map[string]bool)
+	for _, f := range filteredFields {
+		filteredFieldsMap[f] = true
 	}
-	
-	// Pick random field
-	selectedField := fields[rng.Intn(len(fields))]
-	
+
+	// All available fields
+	allFields := []string{
+		"brand", "color", "size", "product_type", "material", "gender", "season", "price_range",
+		"sport", "condition", "seller_type", "country_origin", "style", "fit", "rating",
+		"availability", "storage_location", "payment_method", "shipping_method", "warranty",
+		"return_policy", "eco_friendly", "technology", "customizable", "gift_wrap", "collection",
+		"target_audience", "care_instructions", "fragrance", "transparency_level", "category",
+		"sub_category", "brand_tier", "sustainability", "manufacturing_process", "water_resistance",
+		"breathability", "flexibility", "weight", "region", "warehouse_zone", "promotion_active",
+		"customer_segment", "language", "certification", "fit_model", "support_level", "closure_type",
+		"insole_type", "upper_material", "sole_material", "inventory_status", "popularity_rank",
+		"social_media_trend", "press_coverage", "influencer_endorsed", "age_group", "skill_level",
+		"usage_frequency", "durability_rating", "comfort_rating", "value_rating", "review_authenticity",
+		"batch_number", "production_month", "quality_check", "reorder_level", "vendor_name",
+		"contract_type", "compliance_status", "allergen_info", "import_status", "tax_category", "hazmat",
+		"packaging_type", "packaging_eco", "display_priority", "market_segment", "innovation_level",
+		"color_family", "texture", "opacity", "shine_level", "comfort_level", "performance",
+		"delivery_time", "stock_age_days", "customer_reviews", "competition_level", "market_trend",
+		"design_trend", "energy_efficiency", "noise_level", "temperature_range", "price_volatility",
+		"seasonal_demand", "color_options", "size_range", "accessibility", "eco_impact",
+	}
+
+	// Find fields NOT in the query filters
+	availableFields := []string{}
+	for _, field := range allFields {
+		if !filteredFieldsMap[field] {
+			availableFields = append(availableFields, field)
+		}
+	}
+
+	// If no non-filtered fields available, fall back to all fields
+	if len(availableFields) == 0 {
+		availableFields = allFields
+	}
+
+	// Pick random field from non-filtered fields
+	selectedField := availableFields[rng.Intn(len(availableFields))]
+
 	// Determine actual field path (with "data." for flattened)
 	fieldPath := selectedField
 	if query.Index == "bench_flattened" {
 		fieldPath = "data." + selectedField
 	}
-	
+
 	// Add aggregation
 	mutated.Body["aggs"] = map[string]interface{}{
 		"field_values": map[string]interface{}{
@@ -276,7 +312,8 @@ func mutateQueryWithAgg(query *Query, rng *rand.Rand) *Query {
 			},
 		},
 	}
-	
+	mutated.Body["size"] = 0
+
 	return &mutated
 }
 
@@ -410,13 +447,13 @@ func main() {
 	fmt.Printf("p95 Latency:          %.2f ms\n", result.P95LatencyMs)
 	fmt.Printf("p99 Latency:          %.2f ms\n", result.P99LatencyMs)
 	fmt.Printf("═══════════════════════════════════════\n")
-	
+
 	// Benchmark with aggregations if requested
 	if *benchmarkAggs {
 		fmt.Printf("\n")
 		rng := rand.New(rand.NewSource(*seed))
 		mutatedQueries := mutateQueries(queries, rng)
-		
+
 		fmt.Printf("Running aggregation benchmark...\n")
 		resultAgg, err := runBenchmark(
 			client,
@@ -431,7 +468,7 @@ func main() {
 			fmt.Fprintf(os.Stderr, "ERROR during agg benchmark: %v\n", err)
 			os.Exit(1)
 		}
-		
+
 		// Write agg output
 		aggsOutputFile := strings.Replace(*outputFile, ".json", "_with_aggs.json", 1)
 		outputJSON, _ := json.MarshalIndent(resultAgg, "", "  ")
@@ -440,10 +477,10 @@ func main() {
 			os.Exit(1)
 		}
 		fmt.Printf("✓ Aggregation results written to %s\n\n", aggsOutputFile)
-		
+
 		// Print agg summary
 		fmt.Printf("═══════════════════════════════════════\n")
-		fmt.Printf("BENCHMARK RESULTS (Search + Aggs)\n")
+		fmt.Printf("BENCHMARK RESULTS (Aggs)\n")
 		fmt.Printf("═══════════════════════════════════════\n")
 		fmt.Printf("Requests (warmup):    %d\n", resultAgg.WarmupRequests)
 		fmt.Printf("Requests (benchmark): %d\n", resultAgg.BenchmarkRequests)
