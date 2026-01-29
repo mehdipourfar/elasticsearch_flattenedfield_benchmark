@@ -392,29 +392,33 @@ go run bench.go \
 
 ## Execution Checklist (How to Run End-to-End)
 
-1. Create `fields.json`
-2. Generate bulk files:
+1. ✅ Create `fields.json` — DONE
+2. ✅ Generate `generate_bulk.py` — DONE
+3. ✅ Generate `index_data.py` — DONE
+4. ✅ Generate `generate_queries.py` — DONE
+5. ✅ Generate `bench.go` — DONE
+6. Generate bulk files:
 
    ```bash
    python generate_bulk.py --mode keyword --index-name bench_keywords ...
    python generate_bulk.py --mode flattened --index-name bench_flattened ...
    ```
-3. Index both:
+   7. Index both:
 
-   ```bash
-   python index_data.py --bulk-file bulk_bench_keywords.jsonl ...
-   python index_data.py --bulk-file bulk_bench_flattened.jsonl ...
-   ```
-4. Generate queries:
+       ```bash
+       python index_data.py --bulk-file bulk_bench_keywords.jsonl ...
+       python index_data.py --bulk-file bulk_bench_flattened.jsonl ...
+       ```
+       8. Generate queries:
 
-   ```bash
-   python generate_queries.py --keyword-index bench_keywords --flattened-index bench_flattened ...
-   ```
-5. Benchmark each index separately:
+       ```bash
+       python generate_queries.py --keyword-index bench_keywords --flattened-index bench_flattened ...
+       ```
+       9. Benchmark each index separately:
 
-   ```bash
-   go run bench.go --queries-file queries_bench_keywords.json --output results_bench_keywords.json ...
-   go run bench.go --queries-file queries_bench_flattened.json --output results_bench_flattened.json ...
-   ```
+       ```bash
+       go run bench.go --queries-file queries_bench_keywords.json --output results_bench_keywords.json ...
+       go run bench.go --queries-file queries_bench_flattened.json --output results_bench_flattened.json ...
+       ```
 
----
+   ---

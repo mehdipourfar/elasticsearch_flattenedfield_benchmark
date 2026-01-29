@@ -1,0 +1,798 @@
+{
+  "brand": [
+    "nike",
+    "adidas",
+    "puma",
+    "reebok",
+    "new_balance",
+    "asics",
+    "under_armour",
+    "saucony",
+    "merrell",
+    "salomon"
+  ],
+  "color": [
+    "black",
+    "white",
+    "blue",
+    "red",
+    "green",
+    "yellow",
+    "gray",
+    "navy",
+    "beige",
+    "brown",
+    "pink",
+    "purple"
+  ],
+  "size": [
+    "xs",
+    "s",
+    "m",
+    "l",
+    "xl",
+    "xxl",
+    "3xl",
+    "4xl",
+    "one_size"
+  ],
+  "product_type": [
+    "shoes",
+    "shirt",
+    "pants",
+    "jacket",
+    "hat",
+    "socks",
+    "gloves",
+    "shorts",
+    "sweater",
+    "hoodie",
+    "coat",
+    "vest",
+    "belt",
+    "underwear"
+  ],
+  "material": [
+    "cotton",
+    "polyester",
+    "wool",
+    "silk",
+    "linen",
+    "nylon",
+    "leather",
+    "rubber",
+    "canvas",
+    "denim",
+    "fleece",
+    "spandex",
+    "rayon",
+    "acrylic",
+    "bamboo"
+  ],
+  "gender": [
+    "men",
+    "women",
+    "unisex",
+    "boys",
+    "girls"
+  ],
+  "season": [
+    "spring",
+    "summer",
+    "fall",
+    "winter",
+    "all_season"
+  ],
+  "price_range": [
+    "under_50",
+    "50_100",
+    "100_200",
+    "200_500",
+    "500_plus"
+  ],
+  "sport": [
+    "running",
+    "basketball",
+    "football",
+    "soccer",
+    "tennis",
+    "hiking",
+    "cycling",
+    "swimming",
+    "golf",
+    "volleyball"
+  ],
+  "condition": [
+    "new",
+    "like_new",
+    "excellent",
+    "good",
+    "fair"
+  ],
+  "seller_type": [
+    "official_store",
+    "authorized_retailer",
+    "marketplace_seller",
+    "warehouse",
+    "outlet"
+  ],
+  "country_origin": [
+    "usa",
+    "china",
+    "vietnam",
+    "india",
+    "indonesia",
+    "thailand",
+    "mexico",
+    "brazil"
+  ],
+  "style": [
+    "casual",
+    "formal",
+    "sporty",
+    "vintage",
+    "modern",
+    "classic",
+    "trendy",
+    "minimalist"
+  ],
+  "fit": [
+    "slim",
+    "regular",
+    "loose",
+    "oversized",
+    "tight"
+  ],
+  "rating": [
+    "1_star",
+    "2_star",
+    "3_star",
+    "4_star",
+    "5_star"
+  ],
+  "availability": [
+    "in_stock",
+    "low_stock",
+    "out_of_stock",
+    "pre_order",
+    "discontinued"
+  ],
+  "storage_location": [
+    "warehouse_a",
+    "warehouse_b",
+    "warehouse_c",
+    "store_shelf",
+    "storage_room",
+    "display_case"
+  ],
+  "payment_method": [
+    "credit_card",
+    "debit_card",
+    "paypal",
+    "bank_transfer",
+    "cryptocurrency",
+    "payment_plan"
+  ],
+  "shipping_method": [
+    "standard",
+    "express",
+    "overnight",
+    "local_pickup",
+    "international"
+  ],
+  "warranty": [
+    "no_warranty",
+    "30_days",
+    "90_days",
+    "1_year",
+    "2_years",
+    "lifetime"
+  ],
+  "return_policy": [
+    "no_return",
+    "7_days",
+    "14_days",
+    "30_days",
+    "60_days",
+    "90_days"
+  ],
+  "eco_friendly": [
+    "not_eco",
+    "partial_eco",
+    "mostly_eco",
+    "fully_eco",
+    "certified_eco"
+  ],
+  "technology": [
+    "basic",
+    "smart",
+    "wireless",
+    "solar_powered",
+    "ai_enabled"
+  ],
+  "customizable": [
+    "no",
+    "limited",
+    "partial",
+    "full",
+    "fully_custom"
+  ],
+  "gift_wrap": [
+    "no",
+    "basic",
+    "premium",
+    "luxury",
+    "custom"
+  ],
+  "collection": [
+    "spring_2024",
+    "summer_2024",
+    "fall_2024",
+    "winter_2024",
+    "limited_edition",
+    "signature",
+    "collaboration"
+  ],
+  "target_audience": [
+    "kids",
+    "teens",
+    "young_adults",
+    "adults",
+    "seniors"
+  ],
+  "care_instructions": [
+    "machine_wash",
+    "hand_wash",
+    "dry_clean",
+    "dry_only",
+    "cold_water",
+    "warm_water"
+  ],
+  "fragrance": [
+    "unscented",
+    "light",
+    "moderate",
+    "strong",
+    "extra_strong"
+  ],
+  "transparency_level": [
+    "minimal",
+    "basic",
+    "detailed",
+    "full",
+    "ultra_detailed"
+  ],
+  "category": [
+    "apparel",
+    "footwear",
+    "accessories",
+    "equipment",
+    "lifestyle"
+  ],
+  "sub_category": [
+    "tops",
+    "bottoms",
+    "outerwear",
+    "undergarments",
+    "casual_shoes",
+    "sports_shoes",
+    "bags",
+    "belts",
+    "hats",
+    "gloves"
+  ],
+  "brand_tier": [
+    "budget",
+    "mid_range",
+    "premium",
+    "luxury",
+    "ultra_luxury"
+  ],
+  "sustainability": [
+    "conventional",
+    "organic",
+    "recycled",
+    "regenerated",
+    "carbon_neutral"
+  ],
+  "manufacturing_process": [
+    "mass_produced",
+    "batch_made",
+    "handcrafted",
+    "made_to_order",
+    "artisanal"
+  ],
+  "water_resistance": [
+    "not_water_resistant",
+    "water_repellent",
+    "water_resistant",
+    "waterproof",
+    "submersible"
+  ],
+  "breathability": [
+    "low",
+    "medium",
+    "high",
+    "extra_high",
+    "maximum"
+  ],
+  "flexibility": [
+    "rigid",
+    "semi_flexible",
+    "flexible",
+    "very_flexible",
+    "ultra_flexible"
+  ],
+  "weight": [
+    "extra_light",
+    "light",
+    "medium",
+    "heavy",
+    "extra_heavy"
+  ],
+  "region": [
+    "north_america",
+    "south_america",
+    "europe",
+    "asia",
+    "africa",
+    "oceania"
+  ],
+  "warehouse_zone": [
+    "zone_a",
+    "zone_b",
+    "zone_c",
+    "zone_d",
+    "zone_e"
+  ],
+  "promotion_active": [
+    "no_promotion",
+    "discount_10",
+    "discount_20",
+    "discount_30",
+    "buy_one_get_one"
+  ],
+  "customer_segment": [
+    "new",
+    "returning",
+    "vip",
+    "inactive",
+    "dormant"
+  ],
+  "language": [
+    "english",
+    "spanish",
+    "french",
+    "german",
+    "italian",
+    "portuguese",
+    "chinese",
+    "japanese"
+  ],
+  "certification": [
+    "none",
+    "iso",
+    "fair_trade",
+    "organic_certified",
+    "sweatshop_free"
+  ],
+  "fit_model": [
+    "standard",
+    "athletic",
+    "relaxed",
+    "compression",
+    "slim_fit"
+  ],
+  "support_level": [
+    "no_support",
+    "light",
+    "medium",
+    "high",
+    "maximum"
+  ],
+  "closure_type": [
+    "laces",
+    "velcro",
+    "slip_on",
+    "buckle",
+    "zipper"
+  ],
+  "insole_type": [
+    "basic",
+    "cushioned",
+    "orthopedic",
+    "memory_foam",
+    "gel_insole"
+  ],
+  "upper_material": [
+    "textile",
+    "leather",
+    "synthetic",
+    "mesh",
+    "mixed"
+  ],
+  "sole_material": [
+    "rubber",
+    "foam",
+    "gel",
+    "air",
+    "hybrid"
+  ],
+  "inventory_status": [
+    "available",
+    "low",
+    "critical",
+    "overstock",
+    "reserved"
+  ],
+  "popularity_rank": [
+    "rank_1",
+    "rank_2",
+    "rank_3",
+    "rank_4",
+    "rank_5",
+    "rank_6",
+    "rank_7",
+    "rank_8",
+    "rank_9",
+    "rank_10"
+  ],
+  "social_media_trend": [
+    "viral",
+    "trending",
+    "stable",
+    "declining",
+    "emerging"
+  ],
+  "press_coverage": [
+    "none",
+    "local",
+    "national",
+    "international",
+    "viral"
+  ],
+  "influencer_endorsed": [
+    "no",
+    "micro",
+    "macro",
+    "celebrity",
+    "mega_star"
+  ],
+  "age_group": [
+    "0_5",
+    "6_12",
+    "13_18",
+    "19_25",
+    "26_35",
+    "36_50",
+    "50_plus"
+  ],
+  "skill_level": [
+    "beginner",
+    "intermediate",
+    "advanced",
+    "professional",
+    "expert"
+  ],
+  "usage_frequency": [
+    "occasional",
+    "regular",
+    "frequent",
+    "daily",
+    "multiple_daily"
+  ],
+  "durability_rating": [
+    "low",
+    "medium",
+    "high",
+    "very_high",
+    "exceptional"
+  ],
+  "comfort_rating": [
+    "low",
+    "medium",
+    "high",
+    "very_high",
+    "exceptional"
+  ],
+  "value_rating": [
+    "low",
+    "medium",
+    "high",
+    "very_high",
+    "exceptional"
+  ],
+  "review_authenticity": [
+    "unverified",
+    "verified_purchase",
+    "expert_review",
+    "influencer_review",
+    "staff_picked"
+  ],
+  "batch_number": [
+    "batch_001",
+    "batch_002",
+    "batch_003",
+    "batch_004",
+    "batch_005",
+    "batch_006",
+    "batch_007",
+    "batch_008",
+    "batch_009",
+    "batch_010",
+    "batch_011",
+    "batch_012"
+  ],
+  "production_month": [
+    "jan_2024",
+    "feb_2024",
+    "mar_2024",
+    "apr_2024",
+    "may_2024",
+    "jun_2024",
+    "jul_2024",
+    "aug_2024",
+    "sep_2024",
+    "oct_2024",
+    "nov_2024",
+    "dec_2024"
+  ],
+  "quality_check": [
+    "passed",
+    "passed_with_minor",
+    "needs_review",
+    "failed",
+    "pending"
+  ],
+  "reorder_level": [
+    "low",
+    "medium",
+    "high",
+    "critical",
+    "urgent"
+  ],
+  "vendor_name": [
+    "vendor_a",
+    "vendor_b",
+    "vendor_c",
+    "vendor_d",
+    "vendor_e",
+    "vendor_f",
+    "vendor_g",
+    "vendor_h"
+  ],
+  "contract_type": [
+    "long_term",
+    "seasonal",
+    "spot",
+    "exclusive",
+    "partnership"
+  ],
+  "compliance_status": [
+    "compliant",
+    "pending_review",
+    "non_compliant",
+    "exempt",
+    "unknown"
+  ],
+  "allergen_info": [
+    "no_allergen",
+    "latex",
+    "nickel",
+    "peanut",
+    "shellfish",
+    "wheat"
+  ],
+  "import_status": [
+    "domestic",
+    "imported",
+    "mixed",
+    "sourced_locally",
+    "domestic_1"
+  ],
+  "tax_category": [
+    "standard",
+    "reduced",
+    "exempt",
+    "luxury",
+    "special"
+  ],
+  "hazmat": [
+    "no",
+    "flammable",
+    "toxic",
+    "corrosive",
+    "radioactive"
+  ],
+  "packaging_type": [
+    "box",
+    "bag",
+    "envelope",
+    "crate",
+    "container"
+  ],
+  "packaging_eco": [
+    "non_eco",
+    "recyclable",
+    "biodegradable",
+    "compostable",
+    "reusable"
+  ],
+  "display_priority": [
+    "low",
+    "medium",
+    "high",
+    "featured",
+    "homepage"
+  ],
+  "market_segment": [
+    "mass_market",
+    "niche",
+    "luxury",
+    "budget",
+    "premium"
+  ],
+  "innovation_level": [
+    "standard",
+    "improved",
+    "innovative",
+    "cutting_edge",
+    "revolutionary"
+  ],
+  "color_family": [
+    "warm",
+    "cool",
+    "neutral",
+    "vibrant",
+    "earth_tones"
+  ],
+  "texture": [
+    "smooth",
+    "rough",
+    "soft",
+    "textured",
+    "matte"
+  ],
+  "opacity": [
+    "transparent",
+    "translucent",
+    "opaque",
+    "semi_opaque",
+    "transparent_1"
+  ],
+  "shine_level": [
+    "matte",
+    "satin",
+    "glossy",
+    "metallic",
+    "ultra_glossy"
+  ],
+  "comfort_level": [
+    "low",
+    "medium",
+    "high",
+    "maximum",
+    "luxurious"
+  ],
+  "performance": [
+    "basic",
+    "good",
+    "excellent",
+    "outstanding",
+    "exceptional"
+  ],
+  "delivery_time": [
+    "same_day",
+    "next_day",
+    "2_3_days",
+    "1_week",
+    "2_weeks"
+  ],
+  "stock_age_days": [
+    "fresh",
+    "recent",
+    "moderate",
+    "old",
+    "vintage"
+  ],
+  "customer_reviews": [
+    "no_reviews",
+    "few_reviews",
+    "many_reviews",
+    "highly_reviewed",
+    "best_seller"
+  ],
+  "competition_level": [
+    "low",
+    "moderate",
+    "high",
+    "very_high",
+    "saturated"
+  ],
+  "market_trend": [
+    "declining",
+    "stable",
+    "growing",
+    "booming",
+    "exploding"
+  ],
+  "design_trend": [
+    "minimalist",
+    "maximalist",
+    "retro",
+    "futuristic",
+    "bohemian",
+    "modern",
+    "vintage",
+    "industrial",
+    "rustic",
+    "contemporary",
+    "scandinavian",
+    "art_deco"
+  ],
+  "energy_efficiency": [
+    "standard",
+    "efficient",
+    "highly_efficient",
+    "ultra_efficient",
+    "passive"
+  ],
+  "noise_level": [
+    "silent",
+    "quiet",
+    "moderate",
+    "loud",
+    "very_loud",
+    "extreme"
+  ],
+  "temperature_range": [
+    "cold",
+    "cool",
+    "ambient",
+    "warm",
+    "hot",
+    "extreme_heat"
+  ],
+  "price_volatility": [
+    "stable",
+    "low",
+    "medium",
+    "high",
+    "extreme"
+  ],
+  "seasonal_demand": [
+    "low_demand",
+    "stable",
+    "moderate",
+    "high",
+    "peak_season"
+  ],
+  "color_options": [
+    "single_color",
+    "limited",
+    "moderate",
+    "extensive",
+    "unlimited"
+  ],
+  "size_range": [
+    "limited",
+    "standard",
+    "extended",
+    "full_range",
+    "custom_sizes"
+  ],
+  "accessibility": [
+    "standard",
+    "wheelchair_accessible",
+    "enhanced",
+    "universal_design",
+    "universal_design_variant_4"
+  ],
+  "eco_impact": [
+    "neutral",
+    "low_impact",
+    "positive_impact",
+    "carbon_negative",
+    "zero_waste"
+  ]
+}
