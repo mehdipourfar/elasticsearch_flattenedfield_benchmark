@@ -95,7 +95,7 @@ make help
 
 #### Keyword Index
 
-
+```text
 ═══════════════════════════════════════
 BENCHMARK RESULTS (Search Only)
 ═══════════════════════════════════════
@@ -112,10 +112,6 @@ p95 Latency:          700.85 ms
 p99 Latency:          1388.83 ms
 ═══════════════════════════════════════
 
-Running aggregation benchmark...
-Warmup phase: 5000 requests...
-Benchmark phase: 100000 requests...
-✓ Aggregation results written to results_bench_keywords_with_aggs.json
 
 ═══════════════════════════════════════
 BENCHMARK RESULTS (Search + Aggs)
@@ -132,9 +128,11 @@ Avg Latency:          135.72 ms
 p95 Latency:          708.49 ms
 p99 Latency:          1305.16 ms
 ═══════════════════════════════════════
+```
 
 #### Flattened Index
 
+```text
 ═══════════════════════════════════════
 BENCHMARK RESULTS (Search Only)
 ═══════════════════════════════════════
@@ -171,3 +169,4 @@ Avg Latency:          98.46 ms
 p95 Latency:          172.35 ms
 p99 Latency:          1097.28 ms
 ═══════════════════════════════════════
+```
